@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { User, Camera, AnalyticsData, LoginActivity, CameraActivity } from '../types';
+import { AnalyticsData, Camera, CameraActivity, LoginActivity, User } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://marion-explore-spine-piece.trycloudflare.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -37,12 +37,12 @@ export const authAPI = {
     const response = await api.post('/auth/login', { username, password });
     return response.data;
   },
-  
+
   register: async (userData: Partial<User> & { password: string }) => {
     const response = await api.post('/auth/register', userData);
     return response.data;
   },
-  
+
   verifyToken: async () => {
     const response = await api.get('/auth/verify');
     return response.data;
@@ -55,7 +55,7 @@ export const cameraAPI = {
     const response = await api.get('/cameras');
     return response.data;
   },
-  
+
   createCamera: async (formData: FormData): Promise<Camera> => {
     const response = await api.post('/cameras', formData, {
       headers: {
@@ -64,7 +64,7 @@ export const cameraAPI = {
     });
     return response.data;
   },
-  
+
   updateCamera: async (id: string, formData: FormData): Promise<Camera> => {
     const response = await api.put(`/cameras/${id}`, formData, {
       headers: {
@@ -73,11 +73,11 @@ export const cameraAPI = {
     });
     return response.data;
   },
-  
+
   deleteCamera: async (id: string): Promise<void> => {
     await api.delete(`/cameras/${id}`);
   },
-  
+
   getCamera: async (id: string): Promise<Camera> => {
     const response = await api.get(`/cameras/${id}`);
     return response.data;
@@ -95,7 +95,7 @@ export const analyticsAPI = {
     const response = await api.get('/analytics/dashboard', { params: filters });
     return response.data;
   },
-  
+
   getLoginActivity: async (filters?: {
     startDate?: string;
     endDate?: string;
@@ -103,7 +103,7 @@ export const analyticsAPI = {
     const response = await api.get('/analytics/login-activity', { params: filters });
     return response.data;
   },
-  
+
   getCameraActivity: async (filters?: {
     startDate?: string;
     endDate?: string;

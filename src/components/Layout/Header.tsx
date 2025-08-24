@@ -1,14 +1,14 @@
-import React from 'react';
-import { useAppStore } from '../../store/useAppStore';
-import { BellIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { format } from 'date-fns';
+import { BellIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { format } from "date-fns";
+import React from "react";
+import { useAppStore } from "../../store/useAppStore";
 
 const Header: React.FC = () => {
   const { user, logout } = useAppStore();
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
   };
 
   return (
@@ -28,10 +28,10 @@ const Header: React.FC = () => {
         <div className="flex items-center space-x-4">
           <div className="text-right">
             <p className="text-sm text-gray-400">
-              {format(new Date(), 'MMM dd, yyyy')}
+              {format(new Date(), "MMM dd, yyyy")}
             </p>
             <p className="text-xs text-gray-500">
-              {format(new Date(), 'h:mm a')}
+              {format(new Date(), "h:mm a")}
             </p>
           </div>
 
@@ -44,11 +44,13 @@ const Header: React.FC = () => {
             <button className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-800/50 transition-colors">
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center">
                 <span className="text-sm font-bold text-white">
-                  {user?.username.charAt(0).toUpperCase()}
+                  {user?.username?.charAt(0).toUpperCase() || "?"}
                 </span>
               </div>
               <div className="text-left">
-                <p className="text-sm font-medium text-white">{user?.username}</p>
+                <p className="text-sm font-medium text-white">
+                  {user?.username}
+                </p>
                 <p className="text-xs text-gray-400 capitalize">{user?.role}</p>
               </div>
             </button>

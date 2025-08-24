@@ -1,38 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useAppStore } from '../store/useAppStore';
-import { analyticsAPI } from '../services/api';
-import { AnalyticsData } from '../types';
 import {
-  VideoCameraIcon,
-  PlayIcon,
-  UserGroupIcon,
   ChartBarIcon,
   ClockIcon,
   EyeIcon,
-} from '@heroicons/react/24/outline';
+  PlayIcon,
+  UserGroupIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/24/outline";
+import { format, subDays } from "date-fns";
+import React, { useEffect, useState } from "react";
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts';
-import { format, subDays } from 'date-fns';
+} from "recharts";
+import { analyticsAPI } from "../services/api";
+import { useAppStore } from "../store/useAppStore";
+import { AnalyticsData } from "../types";
 
 const Dashboard: React.FC = () => {
   const { user } = useAppStore();
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
-    startDate: format(subDays(new Date(), 7), 'yyyy-MM-dd'),
-    endDate: format(new Date(), 'yyyy-MM-dd'),
+    startDate: format(subDays(new Date(), 7), "yyyy-MM-dd"),
+    endDate: format(new Date(), "yyyy-MM-dd"),
   });
 
   useEffect(() => {
@@ -45,76 +44,92 @@ const Dashboard: React.FC = () => {
       const data = await analyticsAPI.getDashboardData(dateRange);
       setAnalyticsData(data);
     } catch (error) {
-      console.error('Failed to load analytics:', error);
+      console.error("Failed to load analytics:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (user?.role !== 'admin') {
+  if (user?.role !== "admin") {
     return (
       <div className="text-center py-12">
         <h1 className="text-2xl font-bold text-white mb-4">Access Denied</h1>
-        <p className="text-gray-400">You don't have permission to access this page.</p>
+        <p className="text-gray-400">
+          You don't have permission to access this page.
+        </p>
       </div>
     );
   }
 
   const stats = [
     {
-      name: 'Total Cameras',
+      name: "Total Cameras",
       value: analyticsData?.totalCameras || 0,
       icon: VideoCameraIcon,
-      color: 'bg-primary-500',
-      change: '+12%',
+      color: "bg-primary-500",
+      change: "+12%",
     },
     {
-      name: 'Active Sessions',
+      name: "Active Sessions",
       value: analyticsData?.activeSessions || 0,
       icon: PlayIcon,
-      color: 'bg-green-500',
-      change: '+8%',
+      color: "bg-green-500",
+      change: "+8%",
     },
     {
-      name: 'Total Users',
+      name: "Total Users",
       value: analyticsData?.totalUsers || 0,
       icon: UserGroupIcon,
-      color: 'bg-purple-500',
-      change: '+3%',
+      color: "bg-purple-500",
+      change: "+3%",
     },
     {
-      name: 'Analytics Views',
-      value: '1.2K',
+      name: "Analytics Views",
+      value: "1.2K",
       icon: EyeIcon,
-      color: 'bg-orange-500',
-      change: '+15%',
+      color: "bg-orange-500",
+      change: "+15%",
     },
   ];
 
-  const COLORS = ['#3B82F6', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444'];
+  const COLORS = [
+    "#3B82F6",
+    "#8B5CF6",
+    "#06B6D4",
+    "#10B981",
+    "#F59E0B",
+    "#EF4444",
+  ];
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-          <p className="text-gray-400">Welcome back, {user.username}! Here's your video management overview.</p>
+          <p className="text-gray-400">
+            Welcome back, {user.username}! Here's your video management
+            overview.
+          </p>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <label className="text-sm text-gray-400">Date Range:</label>
             <input
               type="date"
               value={dateRange.startDate}
-              onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+              onChange={(e) =>
+                setDateRange((prev) => ({ ...prev, startDate: e.target.value }))
+              }
               className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
             <span className="text-gray-400">to</span>
             <input
               type="date"
               value={dateRange.endDate}
-              onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+              onChange={(e) =>
+                setDateRange((prev) => ({ ...prev, endDate: e.target.value }))
+              }
               className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
@@ -124,7 +139,10 @@ const Dashboard: React.FC = () => {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-gray-800/50 rounded-xl p-6 animate-pulse">
+            <div
+              key={i}
+              className="bg-gray-800/50 rounded-xl p-6 animate-pulse"
+            >
               <div className="h-20 bg-gray-700 rounded"></div>
             </div>
           ))}
@@ -144,7 +162,9 @@ const Dashboard: React.FC = () => {
                     <stat.icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="ml-4 flex-1">
-                    <p className="text-2xl font-bold text-white">{stat.value}</p>
+                    <p className="text-2xl font-bold text-white">
+                      {stat.value}
+                    </p>
                     <p className="text-gray-400 text-sm">{stat.name}</p>
                   </div>
                   <div className="text-green-400 text-sm font-medium">
@@ -171,13 +191,17 @@ const Dashboard: React.FC = () => {
                     <YAxis stroke="#9CA3AF" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
-                        borderRadius: '8px',
-                        color: '#fff',
+                        backgroundColor: "#1F2937",
+                        border: "1px solid #374151",
+                        borderRadius: "8px",
+                        color: "#fff",
                       }}
                     />
-                    <Bar dataKey="playCount" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                    <Bar
+                      dataKey="playCount"
+                      fill="#3B82F6"
+                      radius={[4, 4, 0, 0]}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -197,10 +221,10 @@ const Dashboard: React.FC = () => {
                     <YAxis stroke="#9CA3AF" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
-                        borderRadius: '8px',
-                        color: '#fff',
+                        backgroundColor: "#1F2937",
+                        border: "1px solid #374151",
+                        borderRadius: "8px",
+                        color: "#fff",
                       }}
                     />
                     <Line
@@ -208,7 +232,7 @@ const Dashboard: React.FC = () => {
                       dataKey="count"
                       stroke="#8B5CF6"
                       strokeWidth={3}
-                      dot={{ fill: '#8B5CF6', r: 4 }}
+                      dot={{ fill: "#8B5CF6", r: 4 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -220,32 +244,42 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Most Active Users */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
-              <h2 className="text-lg font-bold text-white mb-6">Most Active Users</h2>
+              <h2 className="text-lg font-bold text-white mb-6">
+                Most Active Users
+              </h2>
               <div className="space-y-4">
-                {(analyticsData?.mostActiveUsers || []).slice(0, 5).map((user, index) => (
-                  <div key={user.userId} className="flex items-center">
-                    <div className="flex-1">
-                      <div className="flex items-center">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center mr-3">
-                          <span className="text-xs font-bold text-white">
-                            {user.username.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                        <div>
-                          <p className="text-white font-medium">{user.username}</p>
-                          <p className="text-gray-400 text-sm">{user.activityCount} activities</p>
+                {(analyticsData?.mostActiveUsers || [])
+                  .slice(0, 5)
+                  .map((user, index) => (
+                    <div key={user.userId} className="flex items-center">
+                      <div className="flex-1">
+                        <div className="flex items-center">
+                          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-primary-500 to-purple-500 flex items-center justify-center mr-3">
+                            <span className="text-xs font-bold text-white">
+                              {user?.username?.charAt(0).toUpperCase() || "?"}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-white font-medium">
+                              {user.username}
+                            </p>
+                            <p className="text-gray-400 text-sm">
+                              {user.activityCount} activities
+                            </p>
+                          </div>
                         </div>
                       </div>
+                      <div className="text-sm text-gray-400">#{index + 1}</div>
                     </div>
-                    <div className="text-sm text-gray-400">#{index + 1}</div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 
             {/* Camera Status Distribution */}
             <div className="lg:col-span-2 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 p-6">
-              <h2 className="text-lg font-bold text-white mb-6">System Overview</h2>
+              <h2 className="text-lg font-bold text-white mb-6">
+                System Overview
+              </h2>
               <div className="grid grid-cols-2 gap-6 h-64">
                 <div className="flex items-center justify-center">
                   <div className="text-center">

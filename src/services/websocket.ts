@@ -5,7 +5,7 @@ class WebSocketService {
   private readonly url: string;
 
   constructor() {
-    this.url = 'http://localhost:3001';
+    this.url = 'https://marion-explore-spine-piece.trycloudflare.com';
   }
 
   connect(token: string) {

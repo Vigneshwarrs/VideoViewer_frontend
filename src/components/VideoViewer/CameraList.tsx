@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useAppStore } from '../../store/useAppStore';
-import { cameraAPI } from '../../services/api';
-import { Camera } from '../../types';
-import CameraCard from './CameraCard';
-import AddCameraModal from './AddCameraModal';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon } from "@heroicons/react/24/outline";
+import React, { useEffect, useState } from "react";
+import { cameraAPI } from "../../services/api";
+import { useAppStore } from "../../store/useAppStore";
+import { Camera } from "../../types";
+import AddCameraModal from "./AddCameraModal";
+import CameraCard from "./CameraCard";
 
 const CameraList: React.FC = () => {
   const { cameras, setCameras, user, setLoading, setError } = useAppStore();
@@ -21,8 +21,8 @@ const CameraList: React.FC = () => {
       const camerasData = await cameraAPI.getCameras();
       setCameras(camerasData);
     } catch (error) {
-      console.error('Failed to load cameras:', error);
-      setError('Failed to load cameras');
+      console.error("Failed to load cameras:", error);
+      setError("Failed to load cameras");
     } finally {
       setLoading(false);
     }
@@ -48,7 +48,7 @@ const CameraList: React.FC = () => {
     handleCloseModal();
   };
 
-  const isAdmin = user?.role === 'admin';
+  const isAdmin = user?.role === "admin";
 
   return (
     <div className="h-full flex flex-col">
@@ -79,6 +79,7 @@ const CameraList: React.FC = () => {
             )}
           </div>
         ) : (
+          Array.isArray(cameras) &&
           cameras.map((camera) => (
             <CameraCard
               key={camera.videoUrl}
