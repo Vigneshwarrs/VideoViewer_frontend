@@ -5,7 +5,7 @@ class WebSocketService {
   private readonly url: string;
 
   constructor() {
-    this.url = 'https://marion-explore-spine-piece.trycloudflare.com';
+    this.url = 'https://mounts-belt-lens-liberia.trycloudflare.com';
   }
 
   connect(token: string) {
@@ -58,13 +58,13 @@ class WebSocketService {
   }
 
   // Event listeners
-  onVideoData(callback: (data: ArrayBuffer) => void) {
+  onVideoData(callback: (data: any) => void) {
     if (this.socket) {
       this.socket.on('video-data', callback);
     }
   }
 
-  onVideoStatus(callback: (status: any) => void) {
+  onVideoStatus(callback: (status: ArrayBuffer) => void) {
     if (this.socket) {
       this.socket.on('video-status', callback);
     }
