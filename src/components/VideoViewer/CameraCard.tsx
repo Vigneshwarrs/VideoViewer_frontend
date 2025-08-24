@@ -33,7 +33,8 @@ const CameraCard: React.FC<CameraCardProps> = ({ camera, onEdit, onRefresh }) =>
   const isAdmin = user?.role === 'admin';
 
   const handlePlay = () => {
-    if (isSelected && isPlaying) {
+try{
+      if (isSelected && isPlaying) {
       // Pause current camera
       wsService.stopVideoStream(camera["_id"]);
       setIsPlaying(false);
@@ -47,9 +48,14 @@ const CameraCard: React.FC<CameraCardProps> = ({ camera, onEdit, onRefresh }) =>
       
       setSelectedCamera({...camera, id: camera["_id"]});
       wsService.startVideoStream(camera["_id"]);
+      console.log(camera["_id"])
+      console.log(wsService.startVideoStream(camera["_id"]));
       setIsPlaying(true);
       wsService.sendVideoAction(camera["_id"], 'play');
     }
+}catch(err) {
+  console.log("web error",err);
+}
   };
 
   const handleDelete = async () => {
