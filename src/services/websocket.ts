@@ -15,6 +15,7 @@ class WebSocketService {
       auth: { token },
       transports: ['websocket'],
     });
+    this.socket.io.engine.binaryType = "arraybuffer";
 
     this.socket.on('connect', () => {
       console.log('WebSocket connected');
