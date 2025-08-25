@@ -21,19 +21,6 @@ const Sidebar: React.FC = () => {
       icon: VideoCameraIcon,
       roles: ["admin", "user"],
     },
-    {
-      name: "Analytics",
-      href: "/analytics",
-      icon: ChartBarIcon,
-      roles: ["admin"],
-    },
-    { name: "Users", href: "/users", icon: UserGroupIcon, roles: ["admin"] },
-    {
-      name: "Settings",
-      href: "/settings",
-      icon: Cog6ToothIcon,
-      roles: ["admin", "user"],
-    },
   ];
 
   const filteredNavigation = navigation.filter((item) =>

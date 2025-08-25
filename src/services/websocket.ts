@@ -5,7 +5,7 @@ class WebSocketService {
   private readonly url: string;
 
   constructor() {
-    this.url = 'https://mounts-belt-lens-liberia.trycloudflare.com';
+    this.url = 'http://localhost:3001';
   }
 
   connect(token: string) {

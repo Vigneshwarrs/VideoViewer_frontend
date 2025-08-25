@@ -16,7 +16,7 @@ export default function VideoPlayer({ cameraId }: VideoPlayerProps) {
     setLoading(true);
 
     analyticsAPI
-      .videoStatus() // should return ArrayBuffer
+      .videoStatus("68ab376801264a607537a91e") // should return ArrayBuffer
       .then((response) => {
         const bufferData = response.data;
         const arrayBuffer = new Uint8Array(bufferData).buffer;
@@ -67,7 +67,7 @@ export default function VideoPlayer({ cameraId }: VideoPlayerProps) {
         controls
         width={640}
         src={videoUrl || undefined}
-        preload="auto"
+        // preload="auto"
       />
     </div>
   );

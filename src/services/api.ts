@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AnalyticsData, Camera, CameraActivity, LoginActivity, User } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mounts-belt-lens-liberia.trycloudflare.com/api';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -112,14 +112,9 @@ export const analyticsAPI = {
     const response = await api.get('/analytics/camera-activity', { params: filters });
     return response.data;
   },
-  videoStatus: async (): Promise<any> => {
-    var data = {
-      "id": "68aaf43a941e566b655cd8e5"
-    };
-    const response = await api.post('/array', data);
-    console.log(response.headers['content-type']);
-
-    return JSON.parse(response?.data.array);;
+  videoStatus: async (id: string): Promise<any> => {
+    const response = await api.post(`/stream/buffer/${id}`);
+    return JSON.parse(response?.data.strBuffer);;
   },
 };
 
