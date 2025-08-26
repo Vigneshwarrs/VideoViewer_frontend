@@ -112,10 +112,22 @@ export const analyticsAPI = {
     const response = await api.get('/analytics/camera-activity', { params: filters });
     return response.data;
   },
-  videoStatus: async (id: string): Promise<any> => {
-    const response = await api.post(`/stream/buffer/${id}`);
-    return JSON.parse(response?.data.strBuffer);;
+
+  getVideoActivity: async (filters?: {
+    startDate?: string;
+    endDate?: string;
+    cameraId?: string;
+    userId?: string;
+  }): Promise<CameraActivity[]> => {
+    const response = await api.get('/analytics/video-logs', { params: filters });
+    return response.data;
   },
+
+
+  // videoStatus: async (id: string): Promise<any> => {
+  //   const response = await api.post(`/stream/buffer/${id}`);
+  //   return JSON.parse(response?.data.strBuffer);;
+  // },
 };
 
 

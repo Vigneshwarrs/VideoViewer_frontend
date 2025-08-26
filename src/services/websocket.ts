@@ -1,3 +1,4 @@
+import { data } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 
 class WebSocketService {
@@ -58,7 +59,7 @@ class WebSocketService {
   }
 
   // Event listeners
-  onVideoData(callback: (data: any) => void) {
+  onVideoData(callback: (length: any, data: any) => void) {
     if (this.socket) {
       this.socket.on('video-data', callback);
     }

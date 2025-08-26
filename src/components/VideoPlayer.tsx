@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import { analyticsAPI } from "../services/api"; // adjust path
+import { useRef, useState } from "react";
+import { wsService } from "../services/websocket";
 
 interface VideoPlayerProps {
   cameraId: string;
@@ -10,37 +10,31 @@ export default function VideoPlayer({ cameraId }: VideoPlayerProps) {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  useLayoutEffect(() => {
-    if (!cameraId) return;
+  
+  const chunks: any[] = [];
+    const handleVideo = (chunk: any) => {
+        chunks.push(chunk.data);
+    }
 
-    setLoading(true);
-
-    analyticsAPI
-      .videoStatus("68ab376801264a607537a91e") // should return ArrayBuffer
-      .then((response) => {
-        const bufferData = response.data;
-        const arrayBuffer = new Uint8Array(bufferData).buffer;
-        // Wrap ArrayBuffer in Blob with correct type
-        const blob = new Blob([arrayBuffer], { type: "video/mp4" });
-        const url = URL.createObjectURL(blob);
-        console.log(url, "sdasd");
-        setVideoUrl(url);
-      })
-      .catch((err) => console.error("Failed to load video:", err))
-      .finally(() => setLoading(false));
-
-    return () => {
-      if (videoUrl) URL.revokeObjectURL(videoUrl);
-    };
-  }, []);
 
   const handlePlay = () => {
     if (!videoRef.current) return;
+    wsService.startVideoStream(cameraId);
+    wsService.onVideoData(handleVideo);
 
-    videoRef.current
-      .play()
-      .then(() => console.log("Video playing"))
-      .catch((err) => console.warn("Video play failed:", err));
+    wsService.onVideoStatus((status: any) => {
+    if (status.message === "Stream ended") {
+        console.log(chunks);
+      const blob = new Blob(chunks, { type: "video/mp4" });
+      const url = URL.createObjectURL(blob);
+      setVideoUrl(url);
+
+      if (videoRef.current) {
+        videoRef.current.src = url;
+        // videoRef.current.play();
+      }
+    }
+  });
   };
 
   return (

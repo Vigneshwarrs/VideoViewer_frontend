@@ -2,7 +2,6 @@ import React from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { cameraAPI } from '../../services/api';
 import { Camera } from '../../types';
-import { wsService } from '../../services/websocket';
 import {
   PlayIcon,
   PauseIcon,
@@ -21,39 +20,19 @@ interface CameraCardProps {
 
 const CameraCard: React.FC<CameraCardProps> = ({ camera, onEdit, onRefresh }) => {
   const {
-    selectedCamera,
-    setSelectedCamera,
-    isPlaying,
-    setIsPlaying,
+    selectedCameras,
+    toggleSelectedCamera,
     user,
     deleteCamera,
   } = useAppStore();
 
-  const isSelected = selectedCamera?.id === camera["_id"];
-  const isAdmin = user?.role === 'admin';
+    const isSelected = selectedCameras.some((c) => c["_id"] === camera["_id"]);
+    const isAdmin = user?.role === 'admin';
 
   const handlePlay = () => {
-try{
-      if (isSelected && isPlaying) {
-      // Pause current camera
-      wsService.stopVideoStream(camera["_id"]);
-      setIsPlaying(false);
-      wsService.sendVideoAction(camera["_id"], 'pause');
-    } else {
-      // Play this camera
-      if (selectedCamera && selectedCamera.id !== camera["_id"]) {
-        // Stop previous camera
-        wsService.stopVideoStream(selectedCamera.id);
-      }
-      
-      setSelectedCamera({...camera, id: camera["_id"]});
-      wsService.startVideoStream(camera["_id"]);
-      console.log(camera["_id"])
-      console.log(wsService.startVideoStream(camera["_id"]));
-      setIsPlaying(true);
-      wsService.sendVideoAction(camera["_id"], 'play');
-    }
-}catch(err) {
+  try{
+    toggleSelectedCamera(camera);
+  }catch(err) {
   console.log("web error",err);
 }
   };
@@ -136,12 +115,12 @@ try{
               'flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200',
               camera.status === 'offline'
                 ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                : isSelected && isPlaying
+                : isSelected
                 ? 'bg-red-500 hover:bg-red-600 text-white'
                 : 'bg-primary-500 hover:bg-primary-600 text-white'
             )}
           >
-            {isSelected && isPlaying ? (
+            {isSelected ? (
               <>
                 <PauseIcon className="h-4 w-4 mr-1" />
                 Stop

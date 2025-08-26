@@ -86,7 +86,4 @@ export interface AppState {
   isLoading: boolean;
   error: string | null;
   selectedCamera: Camera | null;
-  isPlaying: boolean;
-  currentTime: number;
-  duration: number;
 }

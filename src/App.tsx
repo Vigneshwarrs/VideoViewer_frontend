@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import LoginForm from "./components/Auth/LoginForm";
 import Layout from "./components/Layout/Layout";
-import VideoPlayer from "./components/VideoPlayer";
 import Dashboard from "./pages/Dashboard";
 import VideoViewer from "./pages/VideoViewer";
 import { authAPI } from "./services/api";
@@ -54,10 +53,6 @@ const App: React.FC = () => {
             />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="video-viewer" element={<VideoViewer />} />
-            <Route
-              path="video"
-              element={<VideoPlayer cameraId="68aaf43a941e566b655cd8e5" />}
-            />
             <Route path="analytics" element={<Dashboard />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />

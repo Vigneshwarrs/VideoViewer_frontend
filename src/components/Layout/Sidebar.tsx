@@ -43,8 +43,8 @@ const Sidebar: React.FC = () => {
               clsx(
                 "flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-primary-500/20 text-primary-400 border border-primary-500/30"
-                  : "text-gray-400 hover:text-white hover:bg-gray-800/50"
+                  ? "bg-gray-100/20 text-primary-400 border border-primary-500/30"
+                  : "text-gray-100 hover:text-white hover:bg-gray-800/50"
               )
             }
           >
