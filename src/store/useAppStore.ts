@@ -49,7 +49,7 @@ export const useAppStore = create<AppStore>()(
 
       // Auth actions
       setUser: (user) => set({ user }),
-      logout: () => set({ user: null, selectedCameras: [], selectedCamera: null }),
+      logout: () => set({ user: null, selectedCameras: [], selectedCamera: null, cameras: [], playback: {} }),
 
       // Camera actions
       setCameras: (cameras) => set({ cameras }),
