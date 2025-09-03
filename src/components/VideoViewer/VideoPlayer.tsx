@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useLayoutEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore';
 import { wsService } from '../../services/websocket';
 import {
